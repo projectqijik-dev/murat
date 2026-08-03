@@ -1,0 +1,1243 @@
+/* ==========================================================================
+   CALM MODAL & COMPONENT DESIGN SYSTEM
+   High-precision modal overlays, timetables, article readers, note filters, 
+   gallery hub, universal search, and announcement system
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------- */
+/* 1. UNIVERSAL CALM MODAL ARCHITECTURE                                       */
+/* -------------------------------------------------------------------------- */
+.calm-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.calm-modal.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Backdrop with Cinematic Blur */
+.calm-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 18, 22, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  cursor: pointer;
+}
+
+/* Modal Dialog Window */
+.calm-modal-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 1080px;
+  max-height: 88vh;
+  max-height: 88dvh;
+  background: #1f2428;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-modal);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 2;
+  transform: scale(0.95) translateY(18px);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.calm-modal.active .calm-modal-dialog {
+  transform: scale(1) translateY(0);
+}
+
+/* Modal Header */
+.calm-modal-header {
+  padding: 1.25rem 1.75rem;
+  background: #191c1f;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.calm-modal-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.calm-modal-badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: none;
+  color: var(--calm-gold);
+}
+
+.calm-modal-title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--calm-cream);
+  margin: 0;
+}
+
+/* Prominent & Elegant Close Button (✕) */
+.calm-modal-close {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--calm-cashmere);
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.calm-modal-close:hover {
+  background: var(--calm-sienna);
+  color: #fff;
+  border-color: var(--calm-sienna);
+  transform: rotate(90deg) scale(1.08);
+}
+
+/* Modal Scrollable Body */
+.calm-modal-body {
+  padding: 1.75rem;
+  overflow-y: auto;
+  flex: 1;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* Custom Scrollbar */
+.calm-modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+.calm-modal-body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+.calm-modal-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+.calm-modal-body::-webkit-scrollbar-thumb:hover {
+  background: var(--calm-oak);
+}
+
+/* -------------------------------------------------------------------------- */
+/* 2. DERS PROGRAMI MODALI (SCHEDULE TIMETABLE)                                */
+/* -------------------------------------------------------------------------- */
+.schedule-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+.schedule-table th {
+  background: #181c1f;
+  color: var(--calm-gold);
+  font-family: var(--font-serif);
+  font-weight: 600;
+  padding: 0.85rem 1rem;
+  border-bottom: 2px solid rgba(207, 161, 56, 0.3);
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.schedule-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  vertical-align: middle;
+}
+
+.schedule-table .time-col {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--calm-text-muted);
+  white-space: nowrap;
+  background: rgba(0, 0, 0, 0.15);
+  font-weight: 600;
+  vertical-align: middle;
+  padding: 0.65rem 0.85rem;
+}
+
+.schedule-table .time-col .period-num {
+  display: inline-block;
+  color: var(--calm-gold);
+  font-weight: 700;
+  margin-right: 0.35rem;
+}
+
+.schedule-cell-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.schedule-cell-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.schedule-cell-class {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #fff;
+}
+
+.schedule-badge-subj {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--calm-gold);
+}
+
+.subj-tar {
+  background: rgba(184, 93, 52, 0.25);
+  color: #fca5a5;
+  border: 1px solid rgba(184, 93, 52, 0.4);
+}
+
+.subj-smedy {
+  background: rgba(43, 62, 53, 0.4);
+  color: #86efac;
+  border: 1px solid rgba(74, 105, 90, 0.5);
+}
+
+.subj-sosbl {
+  background: rgba(207, 161, 56, 0.25);
+  color: #fde047;
+  border: 1px solid rgba(207, 161, 56, 0.5);
+}
+
+.subj-tdu-t,
+.subj-tdt {
+  background: rgba(168, 85, 247, 0.2);
+  color: #d8b4fe;
+  border: 1px solid rgba(168, 85, 247, 0.4);
+}
+
+.subj-reh {
+  background: rgba(59, 130, 246, 0.25);
+  color: #93c5fd;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+.schedule-cell-topic {
+  font-size: 0.76rem;
+  color: var(--calm-cashmere);
+}
+
+.schedule-cell-room {
+  font-size: 0.68rem;
+  color: var(--calm-oak-light);
+  font-family: var(--font-mono);
+}
+
+.is-highlight-class {
+  background: rgba(234, 179, 8, 0.15) !important;
+  border-left: 3px solid #eab308 !important;
+  box-shadow: inset 0 0 12px rgba(234, 179, 8, 0.08);
+}
+
+.is-highlight-class .schedule-cell-class {
+  color: #fef08a;
+}
+
+.is-office-hour {
+  background: rgba(59, 130, 246, 0.15) !important;
+  border-left: 3px solid #3b82f6 !important;
+}
+
+.is-day-col {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.schedule-lunch-row td {
+  padding: 0.75rem 1rem;
+}
+
+.schedule-lunch-cell {
+  text-align: center;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--calm-gold);
+  font-family: var(--font-serif);
+  letter-spacing: 0.03em;
+}
+
+.schedule-empty-cell {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.15);
+  font-size: 0.85rem;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 3. DERS NOTLARI MODALI (LECTURE NOTES & FILTERS)                           */
+/* -------------------------------------------------------------------------- */
+.filter-tabs-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.filter-tab {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--calm-cashmere);
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.filter-tab:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.filter-tab.active {
+  background: var(--calm-oak);
+  color: #231f1a;
+  border-color: var(--calm-oak);
+  font-weight: 700;
+}
+
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.note-card {
+  background: #252b30;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.note-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--calm-oak);
+}
+
+.note-card-grade-badge {
+  align-self: flex-start;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-pill);
+  background: rgba(189, 155, 112, 0.2);
+  color: var(--calm-oak-light);
+  border: 1px solid rgba(189, 155, 112, 0.35);
+}
+
+.note-card-title {
+  font-size: 1.05rem;
+  color: #fff;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.note-card-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.note-card-topics-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.note-topic-tag {
+  font-size: 0.7rem;
+  color: var(--calm-text-muted);
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+}
+
+.note-card-footer-meta {
+  font-size: 0.75rem;
+  color: var(--calm-text-muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.note-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+}
+
+.note-card-actions .btn {
+  flex: 1;
+  text-align: center;
+  justify-content: center;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 4. YAZILAR & MAKALELER MODALI & READER                                     */
+/* -------------------------------------------------------------------------- */
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.article-card {
+  background: #252b30;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.article-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--calm-sienna);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.article-card-thumb-wrap {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+  background: #191c1f;
+}
+
+.article-card-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.article-card:hover .article-card-thumb {
+  transform: scale(1.06);
+}
+
+.article-category-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  background: var(--calm-sienna);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-pill);
+  text-transform: none;
+}
+
+.article-card-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 1;
+}
+
+.article-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--calm-text-muted);
+}
+
+.article-title {
+  font-size: 1.1rem;
+  color: #fff;
+  font-family: var(--font-serif);
+  line-height: 1.35;
+}
+
+.article-excerpt {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Article Reader View Inside Modal */
+.reader-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.reader-content {
+  font-family: var(--font-serif-body);
+  font-size: 1.15rem;
+  line-height: 1.85;
+  color: #ede5da;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.reader-content p {
+  margin-bottom: 1.4rem;
+}
+
+.reader-content .article-lead {
+  font-size: 1.25rem;
+  line-height: 1.75;
+  color: var(--calm-cashmere);
+  font-weight: 500;
+  margin-bottom: 1.8rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+}
+
+.reader-content h3 {
+  font-family: var(--font-serif);
+  color: var(--calm-gold);
+  font-size: 1.35rem;
+  margin: 2.2rem 0 1rem 0;
+  border-left: 3px solid var(--calm-gold);
+  padding-left: 0.75rem;
+  line-height: 1.4;
+}
+
+.reader-content .section-roman {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--calm-gold);
+  margin: 2.2rem 0 0.8rem 0;
+  letter-spacing: 0.05em;
+  display: block;
+}
+
+.reader-content blockquote {
+  border-left: 3px solid var(--calm-sienna-light);
+  padding: 0.85rem 1.25rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  background: rgba(197, 85, 54, 0.08);
+  border-radius: 0 8px 8px 0;
+  color: #f1ede7;
+}
+
+.reader-content .article-figure {
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  max-width: 100%;
+}
+
+.reader-content .article-body-img {
+  max-width: 100%;
+  max-height: 480px;
+  object-fit: cover;
+  border-radius: 6px;
+  display: block;
+}
+
+.reader-content figcaption {
+  font-size: 0.85rem;
+  color: var(--calm-gold);
+  font-style: italic;
+  margin-top: 0.65rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.reader-content .poem-block {
+  background: rgba(0, 0, 0, 0.22);
+  border-left: 3px solid var(--calm-gold);
+  padding: 1.25rem 1.75rem;
+  margin: 2rem 0;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  line-height: 1.85;
+}
+
+.reader-content .poem-title {
+  font-size: 1.05rem;
+  color: var(--calm-gold);
+  margin-bottom: 0.9rem;
+  font-style: normal;
+  font-family: var(--font-serif);
+}
+
+.reader-content .article-divider {
+  text-align: center;
+  color: var(--calm-gold);
+  font-size: 0.9rem;
+  margin: 2rem 0;
+  opacity: 0.55;
+}
+
+.reader-content ul, .reader-content ol {
+  padding-left: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.reader-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.65;
+}
+
+.reader-content .article-footnotes {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 0.85rem;
+  color: var(--calm-text-muted);
+  line-height: 1.65;
+}
+
+.reader-content .article-footnotes a {
+  color: var(--calm-gold);
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+/* Light theme overrides for article reader */
+[data-theme="light"] .reader-content {
+  color: #2c2825;
+}
+
+[data-theme="light"] .reader-content .article-lead {
+  color: #5c341e;
+  border-bottom-color: rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .reader-content h3 {
+  color: #8e3d23;
+  border-left-color: #8e3d23;
+}
+
+[data-theme="light"] .reader-content .section-roman {
+  color: #8e3d23;
+}
+
+[data-theme="light"] .reader-content blockquote {
+  background: rgba(164, 76, 44, 0.08);
+  color: #3b2b20;
+}
+
+[data-theme="light"] .reader-content .article-figure {
+  background: #f8f6f0;
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .reader-content figcaption {
+  color: #8e3d23;
+}
+
+[data-theme="light"] .reader-content .poem-block {
+  background: #f5f2ea;
+  border-left-color: #8e3d23;
+  color: #2c2825;
+}
+
+[data-theme="light"] .reader-content .poem-title {
+  color: #8e3d23;
+}
+
+[data-theme="light"] .reader-content .article-footnotes {
+  border-top-color: rgba(0, 0, 0, 0.12);
+  color: #665c54;
+}
+
+[data-theme="light"] .reader-content .article-footnotes a {
+  color: #8e3d23;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 5. GÖRSEL HAFIZA & ARŞİV HUB MODALI (FOTOĞRAF, FİLATELİ, VİDEO)             */
+/* -------------------------------------------------------------------------- */
+.archive-hub-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.archive-hub-card {
+  background: #252b30;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.archive-hub-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--calm-gold);
+}
+
+.archive-hub-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--calm-gold);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+.archive-hub-icon {
+  font-size: 2.2rem;
+}
+
+.archive-hub-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: #fff;
+  margin: 0;
+}
+
+.archive-hub-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.archive-hub-btn {
+  margin-top: auto;
+  align-self: flex-start;
+  background: rgba(196, 160, 64, 0.15);
+  color: var(--calm-gold);
+  border: 1px solid var(--calm-gold);
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 6. ÖZGEÇMİŞ & KİTAP ÖNERİLERİ MODALI                                       */
+/* -------------------------------------------------------------------------- */
+.about-sections-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .about-sections-wrap {
+    grid-template-columns: 1fr;
+  }
+}
+
+.timeline {
+  position: relative;
+  padding-left: 1.5rem;
+  border-left: 2px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.timeline-item {
+  position: relative;
+}
+
+.timeline-marker {
+  position: absolute;
+  left: -1.95rem;
+  top: 0.2rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--calm-gold);
+  box-shadow: 0 0 8px var(--calm-gold);
+}
+
+.timeline-year {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--calm-gold);
+}
+
+.timeline-title {
+  font-size: 0.95rem;
+  color: #fff;
+  font-weight: 600;
+}
+
+.timeline-desc {
+  font-size: 0.8rem;
+  color: var(--calm-text-muted);
+}
+
+/* -------------------------------------------------------------------------- */
+/* 7. EVRENSEL ARAMA MODALI (Ctrl+K)                                          */
+/* -------------------------------------------------------------------------- */
+.search-modal-box {
+  max-width: 680px;
+}
+
+.search-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.25rem;
+  background: #191c1f;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.search-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.1rem;
+  outline: none;
+}
+
+.search-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.search-result-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--calm-gold);
+}
+
+.search-result-type {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--calm-gold);
+}
+
+.search-result-title {
+  font-size: 0.95rem;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Common Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: none;
+}
+
+.btn-primary {
+  background: var(--calm-sienna);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--calm-sienna-light);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--calm-cashmere);
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-color: var(--calm-gold);
+}
+
+/* ==========================================================================
+   LIGHT PARCHMENT THEME OVERRIDES FOR MODALS & COMPONENTS
+   ========================================================================== */
+[data-theme="light-parchment"] .calm-modal-backdrop {
+  background: rgba(45, 38, 30, 0.65);
+}
+
+[data-theme="light-parchment"] .calm-modal-dialog {
+  background: #f7f2ea;
+  border-color: rgba(60, 50, 40, 0.12);
+  color: #211c18;
+}
+
+[data-theme="light-parchment"] .calm-modal-header {
+  background: #ede3d4;
+  border-bottom-color: rgba(60, 50, 40, 0.1);
+}
+
+[data-theme="light-parchment"] .calm-modal-title {
+  color: #211c18;
+}
+
+[data-theme="light-parchment"] .calm-modal-close {
+  background: rgba(60, 50, 40, 0.06);
+  border-color: rgba(60, 50, 40, 0.15);
+  color: #3b3127;
+}
+
+[data-theme="light-parchment"] .calm-modal-close:hover {
+  background: var(--calm-sienna);
+  border-color: var(--calm-sienna);
+  color: #ffffff;
+}
+
+[data-theme="light-parchment"] .schedule-table th {
+  background: #e4d8c5;
+  color: #704719;
+  border-bottom-color: rgba(60, 50, 40, 0.12);
+}
+
+[data-theme="light-parchment"] .schedule-table td {
+  border-bottom-color: rgba(60, 50, 40, 0.08);
+  border-right-color: rgba(60, 50, 40, 0.06);
+}
+
+[data-theme="light-parchment"] .schedule-table .time-col {
+  background: #e6dac8;
+  color: #5c4e43;
+}
+
+[data-theme="light-parchment"] .schedule-table .time-col .period-num {
+  color: #92581a;
+}
+
+[data-theme="light-parchment"] .schedule-table tr:hover td {
+  background: rgba(184, 93, 52, 0.05);
+}
+
+[data-theme="light-parchment"] .schedule-cell-class {
+  color: #1f1915;
+}
+
+[data-theme="light-parchment"] .schedule-cell-topic {
+  color: #4a3e35;
+}
+
+[data-theme="light-parchment"] .schedule-cell-room {
+  color: #70543c;
+}
+
+[data-theme="light-parchment"] .schedule-lunch-cell {
+  background: rgba(60, 50, 40, 0.04);
+  color: #8c571c;
+}
+
+[data-theme="light-parchment"] .is-highlight-class {
+  background: rgba(234, 179, 8, 0.2) !important;
+  border-left: 3px solid #b45309 !important;
+}
+
+[data-theme="light-parchment"] .is-highlight-class .schedule-cell-class {
+  color: #854d0e;
+}
+
+[data-theme="light-parchment"] .is-day-col {
+  background: rgba(60, 50, 40, 0.03);
+}
+
+[data-theme="light-parchment"] .schedule-empty-cell {
+  color: #b0a496;
+}
+
+[data-theme="light-parchment"] .subj-tar {
+  background: rgba(184, 93, 52, 0.15);
+  color: #9c3f18;
+  border-color: rgba(184, 93, 52, 0.35);
+}
+
+[data-theme="light-parchment"] .subj-smedy {
+  background: rgba(43, 90, 60, 0.15);
+  color: #1b6338;
+  border-color: rgba(43, 90, 60, 0.35);
+}
+
+[data-theme="light-parchment"] .subj-sosbl {
+  background: rgba(207, 161, 56, 0.2);
+  color: #8c571c;
+  border-color: rgba(207, 161, 56, 0.4);
+}
+
+[data-theme="light-parchment"] .subj-tdu-t,
+[data-theme="light-parchment"] .subj-tdt {
+  background: rgba(147, 51, 234, 0.12);
+  color: #7e22ce;
+  border-color: rgba(147, 51, 234, 0.3);
+}
+
+[data-theme="light-parchment"] .subj-reh {
+  background: rgba(37, 99, 235, 0.12);
+  color: #1d4ed8;
+  border-color: rgba(37, 99, 235, 0.3);
+}
+
+[data-theme="light-parchment"] .schedule-cell-time {
+  color: #7a501a;
+  background: #ece0d0;
+}
+
+[data-theme="light-parchment"] .schedule-info-bar {
+  background: #ede3d4;
+  border-top-color: rgba(60, 50, 40, 0.1);
+  color: #4a3e35;
+}
+
+[data-theme="light-parchment"] .note-card,
+[data-theme="light-parchment"] .article-card,
+[data-theme="light-parchment"] .archive-hub-card,
+[data-theme="light-parchment"] .announcement-item,
+[data-theme="light-parchment"] .bio-section,
+[data-theme="light-parchment"] .search-result-item {
+  background: #ede4d6;
+  border-color: rgba(60, 50, 40, 0.1);
+  color: #211c18;
+}
+
+[data-theme="light-parchment"] .note-card:hover,
+[data-theme="light-parchment"] .article-card:hover,
+[data-theme="light-parchment"] .archive-hub-card:hover,
+[data-theme="light-parchment"] .announcement-item:hover,
+[data-theme="light-parchment"] .search-result-item:hover {
+  background: #e6dac8;
+  border-color: var(--calm-sienna);
+}
+
+[data-theme="light-parchment"] .note-card-title,
+[data-theme="light-parchment"] .article-title,
+[data-theme="light-parchment"] .archive-hub-title,
+[data-theme="light-parchment"] .announcement-item-title,
+[data-theme="light-parchment"] .search-result-title {
+  color: #1f1915;
+}
+
+[data-theme="light-parchment"] .note-card-desc,
+[data-theme="light-parchment"] .article-excerpt,
+[data-theme="light-parchment"] .archive-hub-desc,
+[data-theme="light-parchment"] .announcement-item-desc {
+  color: #4a3e35;
+}
+
+[data-theme="light-parchment"] .filter-pill,
+[data-theme="light-parchment"] .btn-outline {
+  background: rgba(60, 50, 40, 0.05);
+  border-color: rgba(60, 50, 40, 0.15);
+  color: #2d251e;
+}
+
+[data-theme="light-parchment"] .filter-pill:hover,
+[data-theme="light-parchment"] .filter-pill.active,
+[data-theme="light-parchment"] .btn-outline:hover {
+  background: var(--calm-sienna);
+  color: #ffffff;
+  border-color: var(--calm-sienna);
+}
+
+[data-theme="light-parchment"] .search-input {
+  background: #ede4d6;
+  border-color: rgba(60, 50, 40, 0.18);
+  color: #1f1915;
+}
+
+[data-theme="light-parchment"] .reader-content {
+  color: #211c18;
+}
+
+[data-theme="light-parchment"] .note-card-footer-meta {
+  border-top-color: rgba(60, 50, 40, 0.1);
+  color: #5c4e43;
+}
+
+/* -------------------------------------------------------------------------- */
+/* CLOUDFLARE R2 PDF VIEWER MODAL                                             */
+/* -------------------------------------------------------------------------- */
+.pdf-viewer-dialog {
+  max-width: 1160px;
+  width: 95vw;
+  height: 88vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+  background: #1c2125;
+}
+
+.pdf-viewer-header {
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pdf-viewer-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.pdf-viewer-toolbar-actions .btn {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.pdf-viewer-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: #14171a;
+  display: flex;
+  flex-direction: column;
+}
+
+.pdf-viewer-spinner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(18, 20, 24, 0.9);
+  z-index: 10;
+  color: var(--calm-gold);
+  font-size: 0.95rem;
+  gap: 0.75rem;
+  font-weight: 500;
+}
+
+.pdf-viewer-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  flex: 1;
+  background: #ffffff;
+}
+
+/* Light Theme Overrides for PDF Viewer */
+[data-theme="light-parchment"] .pdf-viewer-dialog {
+  background: #f7f1e6;
+  border-color: rgba(60, 50, 40, 0.15);
+}
+
+[data-theme="light-parchment"] .pdf-viewer-header {
+  border-bottom-color: rgba(60, 50, 40, 0.1);
+  background: #ede3d4;
+}
+
+[data-theme="light-parchment"] .pdf-viewer-spinner {
+  background: rgba(247, 241, 230, 0.92);
+  color: #8c571c;
+}
+
+@media (max-width: 680px) {
+  .pdf-viewer-dialog {
+    width: 98vw;
+    height: 94vh;
+  }
+  .pdf-viewer-toolbar-actions span {
+    display: none;
+  }
+  .pdf-viewer-toolbar-actions .btn {
+    padding: 0.35rem 0.55rem;
+  }
+}
+
+
