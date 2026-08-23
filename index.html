@@ -99,8 +99,8 @@
 
       <!-- Quick Action Pills -->
       <div class="calm-quick-pills">
+	    <button class="calm-pill" onclick="App.openModal('about-modal')"><i class="fa fa-graduation-cap"></i> Özgeçmiş</button>
         <a href="lab/index.html" class="calm-pill" style="text-decoration:none; color:inherit; display:inline-flex; align-items:center; gap:6px;"><i class="fa fa-flask" style="color:var(--calm-gold);"></i>Lab</a>
-        <button class="calm-pill" onclick="App.openModal('about-modal')"><i class="fa fa-graduation-cap"></i> Özgeçmiş</button>
 		<button class="calm-pill" onclick="App.openModal('sozluk-modal')"><i class="fa fa-book"></i> Sözlük</button>
         <button class="calm-pill" onclick="App.openModal('booklist-modal')"><i class="fa fa-bookmark"></i> Kitap Listesi</button>
         <button class="calm-pill" onclick="App.openModal('filmler-modal')"><i class="fa fa-film"></i> Film Listesi</button>
@@ -171,14 +171,17 @@
   <footer class="calm-bottom-dock">
     <div class="calm-dock-inner">
       <div class="calm-footer-social">
-        <a href="https://vimeo.com/belokan" target="_blank" class="calm-social-btn" title="Vimeo: belokan">
+        <a href="mailto:murat@kirkyama.uk" class="calm-social-btn" title="E-posta: murat@kirkyama.uk">
+          <i class="fa fa-envelope"></i> <span></span>
+        </a>
+		<a href="https://vimeo.com/belokan" target="_blank" class="calm-social-btn" title="Vimeo: belokan">
           <i class="fa fa-vimeo"></i> <span></span>
         </a>
         <a href="https://letterboxd.com/belokan" target="_blank" class="calm-social-btn" title="Letterboxd: belokan">
           <i class="fa fa-film"></i> <span></span>
         </a>
       </div>
-      <div class="calm-footer-credit">Murat Mutlu // SolarSys#3</div>
+      <div class="calm-footer-credit">Murat Mutlu// SolarSys#3</div>
     </div>
   </footer>
 
@@ -411,13 +414,13 @@
       <div class="calm-modal-header">
         <div class="calm-modal-title-wrap">
           <span class="calm-modal-badge"><i class="fa fa-university"></i> Koleksiyon</span>
-          <h2 class="calm-modal-title">Görsel Hafıza, Koleksiyon ve Video Arşivleri</h2>
+          <h2 class="calm-modal-title">Görsel Hafıza, Koleksiyon ve Video Arşivi</h2>
         </div>
         <button class="calm-modal-close" onclick="App.closeActiveModal()" title="Kapat (ESC)">✕</button>
       </div>
       <div class="calm-modal-body">
         <p style="color:var(--calm-cashmere); margin-bottom:1.5rem; font-size:0.95rem;">
-          Tarih araştırmaları sırasında çekilen saha fotoğrafları, orijinal posta pulları / efemera belgeleri ve seçkin video kayıtları arşividir.
+          Kartpostallar ve posta pulları / efemeralar, mobil & profesyonel fotoğraf çekimleri ve seçkin video arşivi.
         </p>
 
         <div class="archive-hub-grid">
@@ -425,23 +428,23 @@
           <div class="archive-hub-card" onclick="App.closeActiveModal(); window.GK_GaleriAc('fotografcilik')">
             <div class="archive-hub-icon"><i class="fa fa-camera"></i></div>
             <h3 class="archive-hub-title">Fotoğraf Galerisi</h3>
-            <p class="archive-hub-desc">Anadolu ören yerleri, antik tiyatrolar, kervansaraylar ve tarihi anıtların yüksek çözünürlüklü saha fotoğrafları (Blogger altyapılı).</p>
-            <div class="archive-hub-btn">Galeriyi Aç (21+ Eser) <i class="fa fa-arrow-right"></i></div>
+            <p class="archive-hub-desc">Makinenin arkasından benim gördüklerim.</p>
+            <div class="archive-hub-btn">Galeriyi Aç<i class="fa fa-arrow-right"></i></div>
           </div>
 
           <!-- Filateli & Pul Koleksiyonu Card -->
           <div class="archive-hub-card" onclick="App.closeActiveModal(); window.GK_GaleriAc('filateli')">
             <div class="archive-hub-icon"><i class="fa fa-envelope-open-o"></i></div>
             <h3 class="archive-hub-title">Filateli & Pul Koleksiyonu</h3>
-            <p class="archive-hub-desc">Osmanlı son dönemi ve Cumhuriyet ilk yıllarına ait posta pulları, ilk gün zarfları ve efemera belgeleri arşivi.</p>
-            <div class="archive-hub-btn">Koleksiyonu Aç (50+ Pul) <i class="fa fa-arrow-right"></i></div>
+            <p class="archive-hub-desc">Farklı ülke ve dönemlerden kalan çeşitli yollarla edindğim posta pulları, kartpostallar, ilk gün zarfları ve efemera belgeleri arşivi.</p>
+            <div class="archive-hub-btn">Koleksiyonu Aç<i class="fa fa-arrow-right"></i></div>
           </div>
 
           <!-- Video Arşivi Card -->
           <div class="archive-hub-card" onclick="App.closeActiveModal(); window.GK_GaleriAc('video')">
             <div class="archive-hub-icon"><i class="fa fa-film"></i></div>
             <h3 class="archive-hub-title">Seçkin Video Arşivi</h3>
-            <p class="archive-hub-desc">Tarih metodolojisi, konferanslar, belgeseller ve canlı analizlerin yer aldığı YouTube & Vimeo video koleksiyonu.</p>
+            <p class="archive-hub-desc">Konserlerden, dizilerden, filmlerden ya da bir yerlere gidip gelirken gördüklerim, sevdiklerim arşivlediklerim.</p>
             <div class="archive-hub-btn">Videoları İzle <i class="fa fa-arrow-right"></i></div>
           </div>
         </div>
@@ -569,7 +572,7 @@
         <!-- Footnote / Guidance -->
         <div class="booklist-guidance-note">
           <i class="fa fa-info-circle" style="color: var(--calm-gold); font-size: 1.1rem; flex-shrink: 0; margin-top: 0.15rem;"></i>
-          <span>Bu okuma listesi, öğrencilerimizin tarih derslerindeki kazanımlarını edebi ve akademik nitelikli eserlerle zenginleştirmeleri amacıyla kademe bazında hazırlanmıştır. Listeye yeni eserler dönem içinde eklenecektir.</span>
+          <span>Bu okuma listesi, öğrencilerimin tarih derslerindeki kazanımlarını (bununla sınırlı kalmamak kaydıyla) nitelikli edebi ve akademik  eserlerle zenginleştirmeleri için okumalarını tavsiye ettiğim kitapları kapsamaktadır.</span>
         </div>
       </div>
     </div>
@@ -613,7 +616,7 @@
         <!-- Footnote / Guidance -->
         <div class="booklist-guidance-note" style="margin-top: 1.5rem;">
           <i class="fa fa-info-circle" style="color: var(--calm-gold); font-size: 1.1rem; flex-shrink: 0; margin-top: 0.15rem;"></i>
-          <span>Bu seçki; öğrencilerimizin tarih, felsefe, edebiyat, bilim ve sanat kazanımlarını zenginleştirmek amacıyla tavsiye edilen kültürel ve akademik film kataloğudur.</span>
+          <span>Bu film seçkisi; öğrencilerimin tarih, felsefe, edebiyat, bilim ve sanat alanlarında zihinlerini meşgul edecek, üzerine konuşabilecekleri başka dünyaların/ hayatların mümkün olduğunu anlayabilmelerine katkı sağlama ümidiyle oluşturduğum bir seçkidir.</span>
         </div>
       </div>
     </div>
@@ -625,7 +628,7 @@
     <div class="calm-modal-dialog" style="max-width: 800px;">
       <div class="calm-modal-header">
         <div class="calm-modal-title-wrap">
-          <h2 class="calm-modal-title">Öğrenci & Veli Duyuruları</h2>
+          <h2 class="calm-modal-title">Okul ve ders duyurular</h2>
         </div>
         <div style="display:flex; align-items:center; gap:0.5rem;">
           <button class="btn btn-outline" id="mark-all-read-btn" style="font-size:0.75rem; padding:0.3rem 0.75rem;"><i class="fa fa-check"></i> Tümünü Okundu Say</button>
